@@ -5,7 +5,7 @@ import ItemList from "../ItemList/ItemList";
 import { SyncLoader } from "react-spinners";
 import { db } from "../../firebaseConfig";
 import { collection, getDocs, query, where } from "firebase/firestore";
-import { products } from "../../productsMock";
+
 
 const override = {
   display: "block",
@@ -22,31 +22,36 @@ const ItemListContainer = () => {
   // );
 
   useEffect(() => {
-    // const productList = new Promise((resolve, reject) => {
-    //   setTimeout(()=>{resolve(categoryName ? productosFiltrados : products);}, 2000)
-      
-    // });
-
-    // productList
-    //   .then((res) => {
-    //     setItems(res);
-    //   })
-    //   .catch((error) => {
-    //     console.log(error);
-    //   });
-
     const itemsCollection = collection(db, "products")
-    const q = query(itemsCollection, where("category","==", categoryName))
-    getDocs(q)
-      .then( res=>{
-        let products = res.docs.map( (product)=>{
-          return {
-            ...product.data(),
-            id: product.id
-          }
+      if(categoryName){
+        const q = query(itemsCollection, where("category","==", categoryName))
+        getDocs(q)
+          .then( res=>{
+            let products = res.docs.map( (product)=>{
+              return {
+                ...product.data(),
+                id: product.id
+              }
+            })
+            setItems(products)
+          })
+          
+      }else{
+        getDocs(itemsCollection)
+        .then((res) => {
+          let products = res.docs.map((product)=>{
+            return {
+              ...product.data(),
+              id: product.id
+            }
+          })
+          setItems(products)
         })
-        setItems(products)
-      })
+      }
+
+
+    
+    
   }, [categoryName]);
 
   if( items.length === 0 ){
