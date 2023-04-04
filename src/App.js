@@ -4,10 +4,13 @@ import ItemDetailContainer from "./Components/ItemDetailContainer/ItemDetailCont
 import ItemListContainer from "./Components/ItemListContainer/ItemListContainer";
 import Login from "./Components/Login/Login";
 import Navbar from "./Components/Navbar/Navbar";
+import Form from "./Components/Form/Form";
+import CartContextProvider from "./context/CartContext";
 
 function App() {
   return (
     <BrowserRouter>
+    <CartContextProvider> 
       <Navbar />
 
       <Routes>
@@ -20,9 +23,11 @@ function App() {
         <Route path="/itemDetail/:id" element={<ItemDetailContainer />} />
 
         <Route path="/login" element={<Login />} />
+        <Route path="/formulario" element={<Form />} />
 
         <Route path="*" element={<h1> error 404: Not found </h1>} />
       </Routes>
+      </CartContextProvider>
     </BrowserRouter>
   );
 }
