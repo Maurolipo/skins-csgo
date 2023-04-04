@@ -10,7 +10,7 @@ import { CartContext } from "../../context/CartContext";
 const ItemDetailContainer = () => {
   const { id } = useParams();
 
-  const {agregarAlCarrito} = useContext( CartContext)
+  const {agregarAlCarrito, getQuantityById} = useContext( CartContext)
 
   const productSelected = products.find((element) => element.id === Number(id));
 
@@ -24,12 +24,13 @@ const ItemDetailContainer = () => {
     agregarAlCarrito(producto)
 
   }
+    let quantity = getQuantityById(Number(id))
 
   return (
     <div>
       <h1>{productSelected.title}</h1>
       <img src={productSelected.img} alt="" />
-      <ItemCount stock={productSelected.stock} onAdd={onAdd} />
+      <ItemCount stock={productSelected.stock} onAdd={onAdd} initial={quantity} />
     </div>
   );
 };
